@@ -35,7 +35,7 @@ have been left in the source code in these samples here for clarity.
 Common Features
 ===============
 
-These projects demonsrate the following:
+These projects demonstrate the following:
 
 * Use of long running connections to stream messages (instead of repeated connects and disconnects which place excessive load on the messaging servers)
 * Use of multiple threads to receive messages to increase throughput and to separate the work of receiving messages from the work of processing messages
