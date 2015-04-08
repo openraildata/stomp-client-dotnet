@@ -21,15 +21,10 @@ This solution contains two Visual Studio 2013 Projects, both based on v4.5 of th
 For a comparison between the Darwin Feed and the Network Rail Feeds, see:
 http://nrodwiki.rockshore.net/index.php/Rail_Data_FAQ
 
-These projects are intended to simplify the path to using the Open Rail Data Feeds and demonstrate good practice.
-The code has been structured to support easy re-use in your projects.  The OpenRail*.cs files can be easily copied into other solutions.
+These projects are intended to simplify the path to using the Open Rail Data Feeds and demonstrate good practice. The code has been structured to support easy re-use in your projects.  The OpenRail*.cs files can be easily copied into other solutions.
 
-Both projects are simple Console applications.  Each runs for 120 seconds and then exits.
-They receive messages from the relevant feed(s) and display a running status summary on-screen. 
-Before running the code, some basic user/connection information needs entering into the source code
-and the projects then need to be rebuilt.  This is described in more detail below.
-NB: Such information should of course not be hard coded in any production code, however these values
-have been left in the source code in these samples here for clarity.
+Both projects are simple Console applications.  Each runs for 120 seconds and then exits. They receive messages from the relevant feed(s) and display a running status summary on-screen. Before running the code, some basic user/connection information needs entering into the source code and the projects then need to be rebuilt.  This is described in more detail below.
+NB: Such information should of course not be hard coded in any production code, however these values have been left in the source code in these samples here for clarity.
 
 
 Common Features
