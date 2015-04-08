@@ -5,8 +5,8 @@ Open Rail Data .NET Samples
 
 Version History
 ===============
-Version		Date			Author				Changes
-1.0			2015-04-08		Chris Bailiss		Initial Version
+Version	& Date		Author		Changes
+1.0	2015-04-08	CBailiss	Initial Version
 
 
 
@@ -59,38 +59,38 @@ Your Queue Name can be found in the National Rail Enquiries Data Portal.
 
 The core of the code to receive messages is as follows:
 
-            // create the shared queues (into which the receiver will enqueue messages/errors)
-            ConcurrentQueue<OpenRailMessage> oMessageQueue = new ConcurrentQueue<OpenRailMessage>();
-            ConcurrentQueue<OpenRailException> oErrorQueue = new ConcurrentQueue<OpenRailException>();
+    // create the shared queues (into which the receiver will enqueue messages/errors)
+    ConcurrentQueue<OpenRailMessage> oMessageQueue = new ConcurrentQueue<OpenRailMessage>();
+    ConcurrentQueue<OpenRailException> oErrorQueue = new ConcurrentQueue<OpenRailException>();
 
-			// create the receiver
-            OpenRailDarwinPushPortReceiver oDarwinReceiver = new OpenRailDarwinPushPortReceiver(
-                sConnectUrl, sUser, sPassword, sQueue, oMessageQueue, oErrorQueue, 100);
+    // create the receiver
+    OpenRailDarwinPushPortReceiver oDarwinReceiver = new OpenRailDarwinPushPortReceiver(
+        sConnectUrl, sUser, sPassword, sQueue, oMessageQueue, oErrorQueue, 100);
 
-            // Start the receiver
-            oDarwinReceiver.Start();
+    // Start the receiver
+    oDarwinReceiver.Start();
 
 After these lines have been executed, the oMessageQueue object will start to be populated with messages from the feed.  These messages can be retrieved using a loop as follows:
 
-                // attempt to dequeue and process some messages
-                while (oMessageQueue.Count > 0)
-                {
-                    OpenRailMessage oMessage = null;
-                    if (oMessageQueue.TryDequeue(out oMessage))
-                    {
-                        // All Darwin push port messages should be byte messages
-                        OpenRailBytesMessage oBytesMessage = oMessage as OpenRailBytesMessage;
-                        if (oBytesMessage != null)
-                        {
-                            iBytesMessageCount++;
+    // attempt to dequeue and process some messages
+    while (oMessageQueue.Count > 0)
+    {
+        OpenRailMessage oMessage = null;
+        if (oMessageQueue.TryDequeue(out oMessage))
+        {
+            // All Darwin push port messages should be byte messages
+            OpenRailBytesMessage oBytesMessage = oMessage as OpenRailBytesMessage;
+            if (oBytesMessage != null)
+            {
+                iBytesMessageCount++;
 
-                            // the processing here simply deserializes the message to objects
-                            // Your code here could then write to a database, files, etc.
-                            Pport oPPort = DarwinMessageHelper.GetMessageAsObjects(oBytesMessage.Bytes);
-							// insert your processing code here
-                        }
-                    }
-                }
+                // the processing here simply deserializes the message to objects
+                // Your code here could then write to a database, files, etc.
+                Pport oPPort = DarwinMessageHelper.GetMessageAsObjects(oBytesMessage.Bytes);
+                // insert your processing code here
+            }
+        }
+    }
 
 The oMessageQueue object is thread-safe.  This means the "while" loop above can be executed concurrently in multiple processing threads to provide greater processing throughput.
 
@@ -121,35 +121,35 @@ Whichever feeds you use, you must subscribe to these first in the Network Rail D
 
 The core of the code to receive messages is as follows:
 
-            // create the shared queues (into which the receiver will enqueue messages/errors)
-            ConcurrentQueue<OpenRailMessage> oMessageQueue1 = new ConcurrentQueue<OpenRailMessage>();
-            ConcurrentQueue<OpenRailMessage> oMessageQueue2 = new ConcurrentQueue<OpenRailMessage>();
-            ConcurrentQueue<OpenRailException> oErrorQueue = new ConcurrentQueue<OpenRailException>();
+    // create the shared queues (into which the receiver will enqueue messages/errors)
+    ConcurrentQueue<OpenRailMessage> oMessageQueue1 = new ConcurrentQueue<OpenRailMessage>();
+    ConcurrentQueue<OpenRailMessage> oMessageQueue2 = new ConcurrentQueue<OpenRailMessage>();
+    ConcurrentQueue<OpenRailException> oErrorQueue = new ConcurrentQueue<OpenRailException>();
 
-			// create the receiver
-            OpenRailNRODReceiver oNRODReceiver = new OpenRailNRODReceiver(
-                sConnectUrl, sUser, sPassword, sTopic1, sTopic2, oMessageQueue1, oMessageQueue2, oErrorQueue, bUseDurableSubscription, 100);
+    // create the receiver
+    OpenRailNRODReceiver oNRODReceiver = new OpenRailNRODReceiver(
+        sConnectUrl, sUser, sPassword, sTopic1, sTopic2, oMessageQueue1, oMessageQueue2, oErrorQueue, bUseDurableSubscription, 100);
 
-            // Start the receiver
-            oNRODReceiver.Start();
+    // Start the receiver
+    oNRODReceiver.Start();
 
 After these lines have been executed, the oMessageQueue object will start to be populated with messages from the feed.  These messages can be retrieved using a loop as follows:
 
-                // attempt to dequeue and process some messages
-                while (oMessageQueue1.Count > 0)
-                {
-                    OpenRailMessage oMessage = null;
-                    if (oMessageQueue1.TryDequeue(out oMessage))
-                    {
-                        // All Network Rail Open Data Messages should be text
-                        OpenRailTextMessage oTextMessage = oMessage as OpenRailTextMessage;
-                        if (oTextMessage != null)
-                        {
-                            iTextMessageCount1++;
-                            // insert your processing code here
-                        }
-                    }
-                }
+    // attempt to dequeue and process some messages
+    while (oMessageQueue1.Count > 0)
+    {
+        OpenRailMessage oMessage = null;
+        if (oMessageQueue1.TryDequeue(out oMessage))
+        {
+            // All Network Rail Open Data Messages should be text
+            OpenRailTextMessage oTextMessage = oMessage as OpenRailTextMessage;
+            if (oTextMessage != null)
+            {
+                iTextMessageCount1++;
+                // insert your processing code here
+            }
+        }
+    }
 
 Note that because oMessageQueue is a ConcurrentQueue, occasionally (if another thread is accessing the queue at that very specific moment) TryDequeue() will return false, which
 means it wasn't able at that specific moment to retrieve a message.  This is normal - simply try again as shown in the code above.
