@@ -46,8 +46,9 @@ namespace OpenRailMessaging
         private long miSpinSpreadUntilUtc = (new DateTime(2000, 1, 1)).Ticks;
         private long miIsConnected = 0;
         private long miLastMessageReceivedAtUtc = (new DateTime(2000, 1, 1)).Ticks;
-        private long miMessageReadCount1 = 0; 
+        private long miMessageReadCount1 = 0;
         private long miMessageReadCount2 = 0;
+        private long miLastConnectionExceptionAtUtc = (new DateTime(2000, 1, 1)).Ticks;
 
         public OpenRailNRODReceiver(string sConnectUrl, string sUser, string sPassword, string sTopic1, string sTopic2,
             ConcurrentQueue<OpenRailMessage> oMessageQueue1, ConcurrentQueue<OpenRailMessage> oMessageQueue2, ConcurrentQueue<OpenRailException> oErrorQueue, 
@@ -103,6 +104,12 @@ namespace OpenRailMessaging
             private set { Interlocked.Exchange(ref miLastMessageReceivedAtUtc, value.Ticks); }
         }
 
+        public DateTime LastConnectionExceptionAtUtc
+        {
+            get { return new DateTime(Interlocked.Read(ref miLastConnectionExceptionAtUtc)); }
+            private set { Interlocked.Exchange(ref miLastConnectionExceptionAtUtc, value.Ticks); }
+        }
+
         private async Task Run()
         {
             CancellationToken oCT = moCTS.Token;
@@ -116,7 +123,8 @@ namespace OpenRailMessaging
                 while (!oCT.IsCancellationRequested)
                 {
                     await Task.Delay(50);
-                    bRefreshRequired = (LastMessageReceivedAtUtc.AddSeconds(30) < DateTime.UtcNow);
+                    int iMessageGapToleranceSeconds = DateTime.UtcNow < LastConnectionExceptionAtUtc.AddSeconds(60) ? 30 : 120;
+                    bRefreshRequired = (LastMessageReceivedAtUtc.AddSeconds(iMessageGapToleranceSeconds) < DateTime.UtcNow);
                     if (bRefreshRequired)
                     {
                         Disconnect();
@@ -181,6 +189,7 @@ namespace OpenRailMessaging
                 moConnectionFactory = new NMSConnectionFactory(new Uri(msConnectUrl));
                 moConnection = moConnectionFactory.CreateConnection(msUser, msPassword);
                 moConnection.ClientId = msUser;
+                moConnection.ExceptionListener += new ExceptionListener(OnConnectionException);
                 moSession = moConnection.CreateSession(AcknowledgementMode.AutoAcknowledge);
                 if (!string.IsNullOrWhiteSpace(msTopic1))
                 {
@@ -211,6 +220,18 @@ namespace OpenRailMessaging
                 Disconnect();
                 return false;
             }
+        }
+
+        private void OnConnectionException(Exception exception)
+        {
+            try
+            {
+                OpenRailConnectionException oConnectionException = new OpenRailConnectionException(
+                    OpenRailException.GetShortErrorInfo(exception), exception);
+                moErrorQueue.Enqueue(oConnectionException);
+                LastConnectionExceptionAtUtc = DateTime.UtcNow;
+            }
+            catch { }
         }
 
         private void OnMessageReceived1(IMessage message)

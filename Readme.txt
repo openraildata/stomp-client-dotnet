@@ -6,7 +6,8 @@ Open Rail Data .NET Samples
 Version History
 ===============
 Version	& Date		Author		Changes
-1.0	2015-04-08	CBailiss	Initial Version
+1.00	2015-04-08	CBailiss	Initial Version
+1.01	2015-04-09	CBailiss	Messaging clients hooked up to Apache NMS Connection Exception Listener.
 
 
 
@@ -38,7 +39,8 @@ These projects demonstrate the following:
 * Capture of exceptions also in an in memory queue for logging (e.g. to log file or database)
 * Automatic connection retries for up to a specified total time interval (to simply your code from this logic)
 * When connecting or reconnecting, use of an exponential backoff (to prevent a recovering server from being overwhelmed)
-* Automatic disconnect and reconnect if no messages are received for 30 seconds (to handle the scenario of a quietly dropped connection)
+* Automatic disconnect and reconnect if no messages are received for 30 seconds following an exception on the connection to the messaging server.
+* Automatic disconnect and reconnect if no messages are received for 120 seconds (to handle the scenario of a quietly dropped connection)
 * Use of a durable subscription (applies to the Network Rail feeds only) to retain up to five minutes of message history when a client is disconnected
 * Use of a single connection to receive messages from multiple topics (applies to the Network Rail feeds only)
 

@@ -43,6 +43,14 @@ namespace OpenRailMessaging
         { }
     }
 
+    // occurs when an exception is encountered with the underlying connection to the open data service
+    public class OpenRailConnectionException : OpenRailException
+    {
+        public OpenRailConnectionException(string sMessage, Exception oInnerException)
+            : base(sMessage, oInnerException)
+        { }
+    }
+
     // occurs when an exception is encountered receiving a message
     public class OpenRailMessageException : OpenRailException
     {
