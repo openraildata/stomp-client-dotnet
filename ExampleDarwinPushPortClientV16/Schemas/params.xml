@@ -1,0 +1,23 @@
+<xsd xmlns='http://microsoft.com/dotnet/tools/xsd/'>
+ <!-- Put a slash at the end of the last line to avoid a "specified path or file name too long" error -->
+<generateClasses language='CS' namespace='RttiPPT'>
+	<schema>rttiCTTReferenceSchema_v3.xsd</schema>
+	<schema>rttiCTTSchema_v8.xsd</schema>
+	<schema>rttiPPTAlarms_v1.xsd</schema>
+  <schema>rttiPPTCommonTypes_v1.xsd</schema>
+  <schema>rttiPPTCommonTypes_v2.xsd</schema>
+  <schema>rttiPPTCommonTypes_v3.xsd</schema>
+  <schema>rttiPPTCommonTypes_v4.xsd</schema>
+  <schema>rttiPPTForecasts_v3.xsd</schema>
+  <schema>rttiPPTFormations_v1.xsd</schema>
+  <schema>rttiPPTFormations_v2.xsd</schema>
+  <schema>rttiPPTSchedules_v2.xsd</schema>
+  <schema>rttiPPTSchedules_v3.xsd</schema>
+	<schema>rttiPPTSchema_v16.xsd</schema>
+	<schema>rttiPPTStationMessages_v1.1.xsd</schema>
+	<schema>rttiPPTStatus_v1.xsd</schema>
+	<schema>rttiPPTTDData_v1.xsd</schema>
+	<schema>rttiPPTTrainAlerts_v1.xsd</schema>
+	<schema>.\rttiPPTTrainOrder_v1.xsd</schema>
+</generateClasses>
+</xsd>
