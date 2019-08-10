@@ -106,7 +106,9 @@ namespace MinimalDarwinPushPortClientV16
                     {
                         Pport oPPort = DarwinMessageHelper.GetMessageAsObjects(oMessage.Bytes);
                         string sMessageType = DarwinMessageHelper.GetMessageDescription(oPPort);
-                        Console.WriteLine(DateTime.Now.ToString("HH:mm:ss.fff") + ": Total Messages Received = " + miMessageCount.ToString() + ": Last Message = " + sMessageType);
+                        long iSequenceNumber = Convert.ToInt64(message.Properties["SequenceNumber"]);
+                        long iPushPortSequence = Convert.ToInt64(message.Properties["PushPortSequence"]);
+                        Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Total Messages Received = {miMessageCount}: Last Message = {sMessageType}, SeqNum = {iSequenceNumber}, PPSeqNum = {iPushPortSequence}");
                     }
                 }
             }
