@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Apache.NMS;
-using Apache.NMS.ActiveMQ;
-using OpenRailMessaging;
-using RttiPPT;
 
 namespace MinimalDarwinPushPortClientV16
 {
@@ -21,22 +14,22 @@ namespace MinimalDarwinPushPortClientV16
      * The Apache.NMS and Apache.NMS.ActiveMQ assemblies can be downloaded from http://activemq.apache.org/nms/download.html
      */
 
-    class Program
+    internal static class Program
     {
-        private static int miMessageCount = 0;
+        private static int _miMessageCount;
 
-        static void Main(string[] args)
+        private static void Main()
         {
             try
             {
                 // CONNECTION SETTINGS:  In your code, move these into some form of configuration file / table
                 // *** change the lines below to match your personal details *** 
-                string sConnectUrl = "activemq:tcp://InsertYourHostHere:61616?connection.watchTopicAdvisories=false";
-                string sUser = "InsertYourUserNameHere";
-                string sPassword = "InsertYourPasswordHere";
-                string sTopic = "darwin.pushport-v16";
+                const string sConnectUrl = "activemq:tcp://HOSTNAME:61616?connection.watchTopicAdvisories=false";
+                const string sUser = "TOPIC-USERNAME";
+                const string sPassword = "TOPIC-PASSWORD";
+                const string sTopic = "darwin.pushport-v16";
 
-                if ((sUser == "InsertYourUserNameHere") || (sPassword == "InsertYourPasswordHere") || (sConnectUrl.Contains("InsertYourHostHere")))
+                if (sUser == "TOPIC-USERNAME" || sPassword == "TOPIC-PASSWORD" || sConnectUrl.Contains("HOSTNAME"))
                 {
                     Console.WriteLine("DARWIN PUSH PORT RECEIVER SAMPLE: ");
                     Console.WriteLine();
@@ -49,18 +42,18 @@ namespace MinimalDarwinPushPortClientV16
                 Console.WriteLine("Starting...");
 
                 IConnectionFactory oConnectionFactory = new NMSConnectionFactory(new Uri(sConnectUrl));
-                IConnection oConnection = oConnectionFactory.CreateConnection(sUser, sPassword);
+                var oConnection = oConnectionFactory.CreateConnection(sUser, sPassword);
                 oConnection.ClientId = sUser;
-                oConnection.ExceptionListener += new ExceptionListener(OnConnectionException);
-                ISession oSession = oConnection.CreateSession();
-                ITopic oTopic = oSession.GetTopic(sTopic);
-                IMessageConsumer oConsumer = oSession.CreateConsumer(oTopic);
+                oConnection.ExceptionListener += OnConnectionException;
+                var oSession = oConnection.CreateSession();
+                var oTopic = oSession.GetTopic(sTopic);
+                var oConsumer = oSession.CreateConsumer(oTopic);
 
-                oConsumer.Listener += new MessageListener(OnMessageReceived);
+                oConsumer.Listener += OnMessageReceived;
 
                 oConnection.Start();
 
-                DateTime dtRunUntil = DateTime.Now.AddSeconds(30);
+                var dtRunUntil = DateTime.Now.AddSeconds(30);
                 while (DateTime.Now < dtRunUntil)
                 {
                     Thread.Sleep(50);
@@ -68,7 +61,7 @@ namespace MinimalDarwinPushPortClientV16
 
                 oConnection.Stop();
 
-                DateTime dtWaitUntil = DateTime.Now.AddSeconds(2);
+                var dtWaitUntil = DateTime.Now.AddSeconds(2);
                 while (DateTime.Now < dtWaitUntil)
                 {
                     Thread.Sleep(50);
@@ -96,21 +89,16 @@ namespace MinimalDarwinPushPortClientV16
             try
             {
                 OpenRailBytesMessage oMessage = null;
-                IBytesMessage msgBytes = message as IBytesMessage;
-                if (msgBytes != null) oMessage = new OpenRailBytesMessage(message.NMSTimestamp, msgBytes.Content);
+                if (message is IBytesMessage msgBytes) oMessage = new OpenRailBytesMessage(msgBytes.Content);
 
-                if (oMessage != null)
-                {
-                    miMessageCount++;
-                    if ((miMessageCount % 25) == 0)
-                    {
-                        Pport oPPort = DarwinMessageHelper.GetMessageAsObjects(oMessage.Bytes);
-                        string sMessageType = DarwinMessageHelper.GetMessageDescription(oPPort);
-                        long iSequenceNumber = Convert.ToInt64(message.Properties["SequenceNumber"]);
-                        long iPushPortSequence = Convert.ToInt64(message.Properties["PushPortSequence"]);
-                        Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Total Messages Received = {miMessageCount}: Last Message = {sMessageType}, SeqNum = {iSequenceNumber}, PPSeqNum = {iPushPortSequence}");
-                    }
-                }
+                if (oMessage == null) return;
+                _miMessageCount++;
+                if (_miMessageCount % 25 != 0) return;
+                var oPPort = DarwinMessageHelper.GetMessageAsObjects(oMessage.Bytes);
+                var sMessageType = DarwinMessageHelper.GetMessageDescription(oPPort);
+                var iSequenceNumber = Convert.ToInt64(message.Properties["SequenceNumber"]);
+                var iPushPortSequence = Convert.ToInt64(message.Properties["PushPortSequence"]);
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Total Messages Received = {_miMessageCount}: Last Message = {sMessageType}, SeqNum = {iSequenceNumber}, PPSeqNum = {iPushPortSequence}");
             }
             catch (Exception oException)
             {
