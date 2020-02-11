@@ -4,11 +4,12 @@ Darwin and Network Rail Open Data .NET Examples
 Version History
 ---------------
 
-Version	& Date		Author		Changes
-1.00	2015-04-08	CBailiss	Initial Version
-1.01	2015-04-09	CBailiss	Messaging clients hooked up to Apache NMS Connection Exception Listener.
-1.02	2019-04-18	CBailiss	Added two Darwin Push Port v16 examples:  (1) MinimalDarwinPushPortClientV16 and (2) ExampleDarwinPushPortClientV16
-1.03    2020-02-05  PeterHicks  Minor code and README cleanup
+| Version | Date       | Author     | Changes |
+|---------|------------|------------|---------|    
+| 1.00    | 2015-04-08 | CBailiss   | Initial Version | 
+| 1.01    | 2015-04-09 | CBailiss   | Messaging clients hooked up to Apache NMS Connection Exception Listener. | 
+| 1.02    | 2019-04-18 | CBailiss   | Added two Darwin Push Port v16 examples:  (1) MinimalDarwinPushPortClientV16 and (2) ExampleDarwinPushPortClientV16 | 
+| 1.03    | 2020-02-05 | PeterHicks | Minor code and README cleanup | 
 
 Overview
 --------
