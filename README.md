@@ -10,6 +10,7 @@ Version History
 | 1.01    | 2015-04-09 | CBailiss   | Messaging clients hooked up to Apache NMS Connection Exception Listener. | 
 | 1.02    | 2019-04-18 | CBailiss   | Added two Darwin Push Port v16 examples:  (1) MinimalDarwinPushPortClientV16 and (2) ExampleDarwinPushPortClientV16 | 
 | 1.03    | 2020-02-05 | PeterHicks | Minor code and README cleanup | 
+| 1.04    | 2023-01-20 | Legolash2o | Updated Apached Libraries to ActiveMQ and v1.8.0. Updated default connection to new publicfeeds. Updated .NET version to 4.8
 
 Overview
 --------
