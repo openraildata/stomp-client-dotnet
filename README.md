@@ -1,6 +1,8 @@
 Darwin and Network Rail Open Data .NET Examples
 ===============================================
 
+**IMPORTANT NOTE** - this client has recently been updated in error to use OpenWire, not Stomp.  This message will be removed once the examples are converted back to using Stomp.
+
 Version History
 ---------------
 
