@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Apache.NMS;
-using Apache.NMS.ActiveMQ;
+using Apache.NMS.Stomp;
 
 namespace OpenRailMessaging
 {

@@ -1,8 +1,6 @@
 Darwin and Network Rail Open Data .NET Examples
 ===============================================
 
-**IMPORTANT NOTE** - this client has recently been updated in error to use OpenWire, not Stomp.  This message will be removed once the examples are converted back to using Stomp.
-
 Version History
 ---------------
 
@@ -12,12 +10,20 @@ Version History
 | 1.01    | 2015-04-09 | CBailiss   | Messaging clients hooked up to Apache NMS Connection Exception Listener. | 
 | 1.02    | 2019-04-18 | CBailiss   | Added two Darwin Push Port v16 examples:  (1) MinimalDarwinPushPortClientV16 and (2) ExampleDarwinPushPortClientV16 | 
 | 1.03    | 2020-02-05 | PeterHicks | Minor code and README cleanup | 
-| 1.04    | 2023-01-20 | Legolash2o | Updated Apached Libraries to ActiveMQ and v1.8.0. Updated default connection to new publicfeeds. Updated .NET version to 4.8
+| 1.04    | 2023-01-20 | Legolash2o | Updated Apached Libraries to ActiveMQ and v1.8.0. Updated default connection to new publicfeeds. Updated .NET version to 4.8 |
+| 1.05    | 2023-03-01 | CBailiss   | Reverted previous OpenWire changes (inline with repo name).  Added warning that this repo should be considered historical. |
+
+Warning
+-------
+
+The code in this repo should not be used as the basis of ongoing/future projects.  Development of the Apache NMS Stomp assemblies appears to have been abandoned many years ago and they do not work well with the current version of the Open Data Feeds.
+
+Please see the updated code in the openwire-client-dotnet repo for an updated version of this code that uses OpenWire instead of Stomp.
 
 Overview
 --------
 
-This solution contains four Visual Studio 2017 Projects
+This solution contains three Visual Studio Projects
 
  * `ExampleDarwinPushPortClientV16` demonstrates how to receive information from the RDG Darwin System (V16).
  * `MinimalDarwinPushPortClientV16` demonstrates the bare bones of receiving messages from the RDG Darwin System (V16).
