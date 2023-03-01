@@ -36,8 +36,8 @@
     <Reference Include="Apache.NMS">
       <HintPath>.\Apache.NMS.dll</HintPath>
     </Reference>
-    <Reference Include="Apache.NMS.ActiveMQ">
-      <HintPath>.\Apache.NMS.ActiveMQ.dll</HintPath>
+    <Reference Include="Apache.NMS.Stomp">
+      <HintPath>.\Apache.NMS.Stomp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

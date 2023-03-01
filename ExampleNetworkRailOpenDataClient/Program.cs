@@ -22,7 +22,7 @@ namespace ExampleNetworkRailOpenDataClient
         {
             // CONNECTION SETTINGS:  In your code, move these into some form of configuration file / table
             // *** change the following lines to your user, password and feeds of interest - get this from the Network Rail Data Feeds portal *** 
-            string sConnectUrl = "activemq:tcp://publicdatafeeds.networkrail.co.uk:61619?transport.useInactivityMonitor=false&initialReconnectDelay=250&reconnectDelay=500&consumerExpiryCheckEnabled=false";
+            string sConnectUrl = "stomp:tcp://datafeeds.networkrail.co.uk:61618";
             string sUser = "InsertYourUserIdHere";
             string sPassword = "InsertYourPasswordHere";
             string sTopic1 = "TRAIN_MVT_ALL_TOC";
